@@ -265,7 +265,12 @@ p {
   .hero-copy,
   .hero-support,
   .hero-ctas,
-  .hero-media img {
+  .hero-media img,
+  .hero-depth__ring,
+  .hero-depth__plane,
+  .hero-frame,
+  .stat__face,
+  .stats-aura span {
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
