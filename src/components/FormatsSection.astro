@@ -4,117 +4,96 @@ const formats = await getFormats();
 ---
 
 <section class="section formats" id="formats" aria-labelledby="formats-title">
-  <div class="wrap formats__layout">
-    <div class="formats__intro reveal-left">
-      <p class="kicker">Formats</p>
-      <h2 class="section-title" id="formats-title">Every render your buyer can actually run</h2>
-      <p class="section-lead">A hub of formats — not a single freelancer hoping one cut lands.</p>
+  <div class="wrap">
+    <div class="formats__head">
+      <p class="kicker reveal">Capabilities</p>
+      <h2 class="section-title reveal d1" id="formats-title">Formats buyers can actually run</h2>
+      <p class="section-lead reveal d2">
+        Four production lanes under one hub — pick what your accounts need this week.
+      </p>
     </div>
 
-    <ol class="format-list">
+    <ul class="format-grid">
       {
         formats.map((f, i) => (
-          <li class={`format-row reveal d${(i % 4) + 1}`}>
-            <span class="format-row__n">{f.label}</span>
-            <div class="format-row__body">
-              <h3>{f.title}</h3>
-              <p>{f.blurb}</p>
-            </div>
-            <span class="format-row__arrow" aria-hidden="true">↗</span>
+          <li class={`format-card reveal-scale d${(i % 4) + 1}`}>
+            <span class="format-card__n">{f.label}</span>
+            <h3>{f.title}</h3>
+            <p>{f.blurb}</p>
           </li>
         ))
       }
-    </ol>
+    </ul>
   </div>
 </section>
 
 <style>
   .formats {
-    background:
-      linear-gradient(180deg, transparent, rgba(207, 244, 252, 0.35) 40%, transparent),
-      var(--mist);
+    background: var(--bg-2);
   }
 
-  .formats__layout {
-    display: grid;
-    gap: 2.5rem;
+  .formats__head {
+    max-width: 38rem;
+    margin-bottom: 2.5rem;
   }
 
-  @media (min-width: 960px) {
-    .formats__layout {
-      grid-template-columns: 0.85fr 1.25fr;
-      gap: 4rem;
-      align-items: start;
-    }
-
-    .formats__intro {
-      position: sticky;
-      top: 6rem;
-    }
-  }
-
-  .format-list {
+  .format-grid {
     list-style: none;
     margin: 0;
     padding: 0;
-  }
-
-  .format-row {
     display: grid;
-    grid-template-columns: auto 1fr auto;
     gap: 1rem;
-    align-items: start;
-    padding: 1.5rem 0.25rem;
-    border-top: 1px solid var(--line-strong);
-    transition: background 0.35s var(--ease), padding-left 0.35s var(--ease);
   }
 
-  .format-row:last-child {
-    border-bottom: 1px solid var(--line-strong);
+  @media (min-width: 700px) {
+    .format-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.15rem;
+    }
   }
 
-  .format-row:hover {
-    background: rgba(255, 255, 255, 0.45);
-    padding-left: 0.75rem;
+  .format-card {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+    min-height: 14rem;
+    padding: 1.5rem 1.4rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 1.15rem;
+    box-shadow: var(--shadow-sm);
+    transition:
+      transform 0.4s var(--ease),
+      box-shadow 0.4s var(--ease),
+      border-color 0.4s var(--ease);
   }
 
-  .format-row__n {
-    font-size: 0.72rem;
+  .format-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--line-strong);
+  }
+
+  .format-card__n {
+    display: inline-flex;
+    width: fit-content;
+    padding: 0.35rem 0.65rem;
+    border-radius: 999px;
+    background: var(--signal-soft);
+    color: var(--signal);
+    font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--cyan);
-    padding-top: 0.45rem;
   }
 
-  .format-row__body h3 {
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
-    margin-bottom: 0.4rem;
+  .format-card h3 {
+    font-size: clamp(1.45rem, 3vw, 1.85rem);
   }
 
-  .format-row__body p {
+  .format-card p {
     color: var(--muted);
-    max-width: 36rem;
-  }
-
-  .format-row__arrow {
-    font-size: 1.4rem;
-    color: var(--cobalt);
-    transform: translateY(0.35rem) rotate(-12deg);
-    transition: transform 0.35s var(--ease);
-  }
-
-  .format-row:hover .format-row__arrow {
-    transform: translateY(0.15rem) rotate(0deg) scale(1.1);
-  }
-
-  @media (max-width: 640px) {
-    .format-row {
-      grid-template-columns: 1fr auto;
-    }
-
-    .format-row__n {
-      grid-column: 1 / -1;
-    }
+    font-size: 0.95rem;
+    max-width: 28rem;
   }
 </style>

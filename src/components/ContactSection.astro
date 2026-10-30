@@ -6,41 +6,72 @@ const mailHref = `mailto:${site.email}?subject=${encodeURIComponent('RenderHub M
 ---
 
 <section class="section contact" id="contact" aria-labelledby="contact-title">
-  <div class="wrap contact__shell reveal-scale">
-    <div class="contact__copy">
-      <p class="kicker">Contact</p>
-      <h2 class="section-title" id="contact-title">Plug your accounts into the hub</h2>
-      <p class="section-lead">
-        Tell us the bottleneck — volume, formats, turnaround — and we’ll map the RenderHub workflow.
-      </p>
-      <div class="contact-links">
-        {waHref && <a href={waHref} target="_blank" rel="noopener noreferrer">WhatsApp {site.whatsappDisplay}</a>}
-        <a href={mailHref}>{site.email}</a>
-        <span>{site.location}</span>
+  <div class="wrap">
+    <div class="contact__shell reveal-scale">
+      <div class="contact__copy">
+        <p class="kicker">Contact</p>
+        <h2 class="section-title" id="contact-title">Tell us what’s stuck. We’ll map the pack.</h2>
+        <p class="section-lead">
+          Volume, formats, turnaround — drop the bottleneck. We reply with a clear production plan, not a vague pitch.
+        </p>
+
+        <ul class="contact-channels">
+          <li>
+            <span>Email</span>
+            <a href={mailHref}>{site.email}</a>
+          </li>
+          {
+            waHref && (
+              <li>
+                <span>WhatsApp</span>
+                <a href={waHref} target="_blank" rel="noopener noreferrer">
+                  {site.whatsappDisplay || 'Chat now'}
+                </a>
+              </li>
+            )
+          }
+          <li>
+            <span>Studio</span>
+            <strong>{site.location}</strong>
+          </li>
+        </ul>
+      </div>
+
+      <div class="contact__panel">
+        <p class="contact__panel-kicker">Send a brief</p>
+        <form
+          class="contact-form"
+          method="POST"
+          action={site.formspreeEndpoint || undefined}
+          data-mailto={mailHref}
+        >
+          <div class="contact-form__row">
+            <label>
+              <span>Name</span>
+              <input type="text" name="name" required autocomplete="name" placeholder="Your name" />
+            </label>
+            <label>
+              <span>Work email</span>
+              <input type="email" name="email" required autocomplete="email" placeholder="you@brand.com" />
+            </label>
+          </div>
+          <label>
+            <span>What’s stuck?</span>
+            <textarea
+              name="message"
+              rows="5"
+              required
+              placeholder="Accounts, volume, formats, timeline…"
+            ></textarea>
+          </label>
+          <div class="contact-form__actions">
+            <button class="btn btn-primary" type="submit">Send brief</button>
+            <a class="btn btn-ghost" href={mailHref}>Prefer email?</a>
+          </div>
+          {!site.formspreeEndpoint && <p class="hint">Opens your mail app until Formspree is set in admin.</p>}
+        </form>
       </div>
     </div>
-
-    <form
-      class="contact-form"
-      method="POST"
-      action={site.formspreeEndpoint || undefined}
-      data-mailto={mailHref}
-    >
-      <label>
-        <span>Name</span>
-        <input type="text" name="name" required autocomplete="name" />
-      </label>
-      <label>
-        <span>Work email</span>
-        <input type="email" name="email" required autocomplete="email" />
-      </label>
-      <label>
-        <span>What’s stuck?</span>
-        <textarea name="message" rows="5" required placeholder="Accounts, volume, formats, timeline…"></textarea>
-      </label>
-      <button class="btn btn-primary" type="submit">Send brief</button>
-      {!site.formspreeEndpoint && <p class="hint">Opens email until Formspree is set in admin.</p>}
-    </form>
   </div>
 </section>
 
@@ -58,43 +89,104 @@ const mailHref = `mailto:${site.email}?subject=${encodeURIComponent('RenderHub M
 
 <style>
   .contact {
-    padding-bottom: 5rem;
+    padding-bottom: clamp(3.5rem, 8vw, 5.5rem);
   }
 
   .contact__shell {
     display: grid;
     gap: 2rem;
-    padding: clamp(1.5rem, 4vw, 3rem);
+    padding: clamp(1.5rem, 4vw, 2.75rem);
     background:
-      linear-gradient(145deg, rgba(255, 255, 255, 0.85), rgba(207, 244, 252, 0.45)),
-      var(--panel);
+      linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(20, 184, 166, 0.08)),
+      var(--surface);
     border: 1px solid var(--line-strong);
-    box-shadow: 0 30px 80px rgba(15, 23, 36, 0.08);
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-xl);
   }
 
-  @media (min-width: 900px) {
+  @media (min-width: 960px) {
     .contact__shell {
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 2.75rem;
       align-items: start;
+      border-radius: 1.75rem;
+      padding: clamp(2rem, 4vw, 3rem);
     }
   }
 
-  .contact-links {
+  .contact .section-title {
+    max-width: 14ch;
+  }
+
+  .contact-channels {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
     display: grid;
-    gap: 0.45rem;
+    gap: 0.85rem;
+  }
+
+  .contact-channels li {
+    display: grid;
+    gap: 0.2rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .contact-channels span {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
     color: var(--muted);
   }
 
-  .contact-links a {
-    font-weight: 650;
+  .contact-channels a,
+  .contact-channels strong {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 2.3vw, 1.35rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
     text-decoration: none;
     color: var(--ink);
+    word-break: break-word;
+  }
+
+  .contact-channels a:hover {
+    color: var(--signal);
+  }
+
+  .contact__panel {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 1.15rem;
+    padding: clamp(1.2rem, 3vw, 1.75rem);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .contact__panel-kicker {
+    margin: 0 0 1.15rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--signal);
   }
 
   .contact-form {
     display: grid;
-    gap: 0.9rem;
+    gap: 0.95rem;
+  }
+
+  .contact-form__row {
+    display: grid;
+    gap: 0.95rem;
+  }
+
+  @media (min-width: 640px) {
+    .contact-form__row {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 
   .contact-form label {
@@ -103,9 +195,9 @@ const mailHref = `mailto:${site.email}?subject=${encodeURIComponent('RenderHub M
   }
 
   .contact-form span {
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
   }
@@ -113,18 +205,28 @@ const mailHref = `mailto:${site.email}?subject=${encodeURIComponent('RenderHub M
   .contact-form input,
   .contact-form textarea {
     width: 100%;
-    padding: 0.85rem 0.95rem;
+    padding: 0.9rem 1rem;
     border: 1px solid var(--line-strong);
-    background: rgba(255, 255, 255, 0.8);
+    background: var(--surface);
     color: var(--ink);
-    transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+    border-radius: 0.75rem;
+    transition:
+      border-color 0.3s var(--ease),
+      box-shadow 0.3s var(--ease);
   }
 
   .contact-form input:focus,
   .contact-form textarea:focus {
     outline: none;
-    border-color: var(--cyan);
-    box-shadow: 0 0 0 4px var(--glow);
+    border-color: var(--signal);
+    box-shadow: 0 0 0 4px var(--signal-soft);
+  }
+
+  .contact-form__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 0.15rem;
   }
 
   .hint {

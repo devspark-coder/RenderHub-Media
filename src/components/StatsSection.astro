@@ -1,0 +1,78 @@
+---
+import { getStats } from '../lib/content';
+const stats = await getStats();
+---
+
+{
+  stats.length > 0 && (
+    <section class="section stats" id="impact" aria-label="Impact numbers">
+      <div class="wrap">
+        <div class="stats__head reveal">
+          <p class="kicker">Impact</p>
+          <h2 class="section-title">Numbers that back the work</h2>
+        </div>
+        <dl class="stats-grid">
+          {stats.map((stat, i) => (
+            <div class={`stat reveal d${(i % 4) + 1}`}>
+              <dt class="stat__value">
+                <span data-count={stat.value}>0</span>
+                {stat.suffix}
+              </dt>
+              <dd class="stat__label">{stat.label}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .stats {
+    padding-block: clamp(3.5rem, 8vw, 5.5rem);
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .stats .kicker {
+    color: var(--signal-bright);
+  }
+
+  .stats .section-title {
+    color: #fff;
+    max-width: 12ch;
+  }
+
+  .stats__head {
+    margin-bottom: 2.25rem;
+  }
+
+  .stats-grid {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.75rem 1.25rem;
+  }
+
+  @media (min-width: 900px) {
+    .stats-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  .stat__value {
+    margin: 0 0 0.45rem;
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .stat__label {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.9rem;
+  }
+</style>

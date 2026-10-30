@@ -4,7 +4,9 @@ export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import Hero from '../components/Hero.astro';
+import StatsSection from '../components/StatsSection.astro';
 import WorkSection from '../components/WorkSection.astro';
+import TestimonialsSection from '../components/TestimonialsSection.astro';
 import FormatsSection from '../components/FormatsSection.astro';
 import ProcessSection from '../components/ProcessSection.astro';
 import ContactSection from '../components/ContactSection.astro';
@@ -14,11 +16,13 @@ import { getSite } from '../lib/content';
 const site = await getSite();
 ---
 
-<BaseLayout title={`${site.name} — Render. Cut. Ship.`} description={site.supporting}>
+<BaseLayout title={`${site.name} — Creative production`} description={site.supporting}>
   <SiteHeader />
   <main id="main">
     <Hero />
+    <StatsSection />
     <WorkSection />
+    <TestimonialsSection />
     <FormatsSection />
     <ProcessSection />
     <ContactSection />

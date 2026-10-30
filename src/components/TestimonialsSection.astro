@@ -1,0 +1,90 @@
+---
+import { getTestimonials } from '../lib/content';
+const items = await getTestimonials();
+---
+
+{
+  items.length > 0 && (
+    <section class="section testimonials" id="comments" aria-labelledby="comments-title">
+      <div class="wrap">
+        <div class="testimonials__head">
+          <p class="kicker reveal">Client comments</p>
+          <h2 class="section-title reveal d1" id="comments-title">What buyers say after the first pack</h2>
+        </div>
+
+        <div class="testimonials-grid">
+          {items.map((item, i) => (
+            <figure class={`testimonial reveal-scale d${(i % 4) + 1}`}>
+              <blockquote>
+                <p>“{item.quote}”</p>
+              </blockquote>
+              <figcaption>
+                <strong>{item.name}</strong>
+                <span>{item.role}</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .testimonials {
+    background: var(--surface);
+    border-block: 1px solid var(--line);
+  }
+
+  .testimonials__head {
+    margin-bottom: 2.25rem;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 800px) {
+    .testimonials-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
+  .testimonial {
+    margin: 0;
+    padding: 1.5rem 1.35rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-top: 2px solid var(--signal);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .testimonial blockquote {
+    margin: 0 0 1.25rem;
+  }
+
+  .testimonial p {
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+    line-height: 1.35;
+    letter-spacing: -0.025em;
+    color: var(--ink-soft);
+  }
+
+  .testimonial figcaption {
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .testimonial strong {
+    font-size: 0.95rem;
+  }
+
+  .testimonial span {
+    color: var(--muted);
+    font-size: 0.84rem;
+  }
+</style>

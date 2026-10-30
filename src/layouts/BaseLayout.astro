@@ -9,7 +9,7 @@ interface Props {
 
 const site = await getSite();
 const {
-  title = `${site.name} — Render. Cut. Ship.`,
+  title = `${site.name} — Creative production`,
   description = site.supporting,
 } = Astro.props;
 ---
@@ -18,19 +18,20 @@ const {
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#f3f6fb" />
+    <meta name="theme-color" content="#f6f7f9" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={site.url} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={site.url} />
+    <meta property="og:image" content={`${site.url}/hero-stage.jpg`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Sora:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <title>{title}</title>
@@ -53,7 +54,7 @@ const {
     z-index: 100;
     padding: 0.5rem 0.75rem;
     background: var(--ink);
-    color: var(--snow);
+    color: #fff;
     font-weight: 700;
     text-decoration: none;
   }

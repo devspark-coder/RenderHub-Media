@@ -40,10 +40,45 @@ export default config({
         platform: fields.text({ label: 'Platform' }),
         vertical: fields.text({ label: 'Vertical' }),
         poster: fields.text({
-          label: 'Poster path',
-          description: 'e.g. /posters/work-01.svg',
+          label: 'Poster image path',
+          description: 'Cover image for now, e.g. /posters/work-01.jpg',
         }),
-        driveUrl: fields.url({ label: 'Drive URL' }),
+        videoSrc: fields.text({
+          label: 'Short video path (optional)',
+          description: 'When ready, put an mp4 in /public/videos/ and paste e.g. /videos/work-01.mp4 — replaces the poster on hover/autoplay.',
+        }),
+        driveUrl: fields.url({
+          label: 'Drive / reel URL',
+          description: 'Paste the Google Drive (or other) link clients open for the full cut.',
+        }),
+        order: fields.integer({ label: 'Order', defaultValue: 1 }),
+      },
+    }),
+    stats: collection({
+      label: 'Impact stats',
+      slugField: 'label',
+      path: 'src/content/stats/*',
+      format: { data: 'yaml' },
+      schema: {
+        label: fields.slug({ name: { label: 'Label' } }),
+        value: fields.integer({ label: 'Number', description: 'Counting target, e.g. 120' }),
+        suffix: fields.text({
+          label: 'Suffix',
+          description: 'Optional — e.g. +, K, M',
+          defaultValue: '+',
+        }),
+        order: fields.integer({ label: 'Order', defaultValue: 1 }),
+      },
+    }),
+    testimonials: collection({
+      label: 'Testimonials',
+      slugField: 'name',
+      path: 'src/content/testimonials/*',
+      format: { data: 'yaml' },
+      schema: {
+        name: fields.slug({ name: { label: 'Name' } }),
+        role: fields.text({ label: 'Role / company' }),
+        quote: fields.text({ label: 'Comment', multiline: true }),
         order: fields.integer({ label: 'Order', defaultValue: 1 }),
       },
     }),

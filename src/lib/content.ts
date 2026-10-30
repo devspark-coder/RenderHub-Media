@@ -37,3 +37,17 @@ export async function getProcess() {
     .map((entry) => ({ id: entry.id, ...entry.data }))
     .sort((a, b) => a.order - b.order);
 }
+
+export async function getStats() {
+  const items = await getCollection('stats');
+  return items
+    .map((entry) => ({ id: entry.id, ...entry.data }))
+    .sort((a, b) => a.order - b.order);
+}
+
+export async function getTestimonials() {
+  const items = await getCollection('testimonials');
+  return items
+    .map((entry) => ({ id: entry.id, ...entry.data }))
+    .sort((a, b) => a.order - b.order);
+}

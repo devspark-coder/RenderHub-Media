@@ -9,7 +9,28 @@ const work = defineCollection({
     platform: z.string(),
     vertical: z.string(),
     poster: z.string(),
+    videoSrc: z.string().optional().default(''),
     driveUrl: z.string(),
+    order: z.number(),
+  }),
+});
+
+const stats = defineCollection({
+  loader: glob({ pattern: '**/*.{yaml,yml}', base: './src/content/stats' }),
+  schema: z.object({
+    label: z.string(),
+    value: z.number(),
+    suffix: z.string().optional().default('+'),
+    order: z.number(),
+  }),
+});
+
+const testimonials = defineCollection({
+  loader: glob({ pattern: '**/*.{yaml,yml}', base: './src/content/testimonials' }),
+  schema: z.object({
+    name: z.string(),
+    role: z.string(),
+    quote: z.string(),
     order: z.number(),
   }),
 });
@@ -34,4 +55,4 @@ const process = defineCollection({
   }),
 });
 
-export const collections = { work, formats, process };
+export const collections = { work, stats, testimonials, formats, process };

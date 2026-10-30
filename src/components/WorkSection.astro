@@ -1,32 +1,94 @@
 ---
 import { getWork } from '../lib/content';
 const work = await getWork();
+const [featured, ...rest] = work;
 ---
 
 <section class="section work" id="work" aria-labelledby="work-title">
   <div class="wrap work__head">
     <div>
-      <p class="kicker reveal">Selected renders</p>
-      <h2 class="section-title reveal d1" id="work-title">Work that already looks live in an ad account</h2>
+      <p class="kicker reveal">Selected work</p>
+      <h2 class="section-title reveal d1" id="work-title">Proof before the pitch</h2>
     </div>
     <p class="section-lead reveal d2">
-      Scroll the strip. Open any piece for the full Drive reel.
+      Poster covers for now — each card opens the Drive reel. Drop short videos in admin later to replace stills.
     </p>
   </div>
 
-  <div class="work-strip" data-strip tabindex="0" aria-label="Work carousel">
+  {
+    featured && (
+      <div class="wrap work-featured reveal-scale">
+        <a
+          class="work-card work-card--feature"
+          href={featured.driveUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="work-card__media">
+            {featured.videoSrc ? (
+              <video
+                class="work-card__video"
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                poster={featured.poster}
+                data-work-video
+              >
+                <source src={featured.videoSrc} type="video/mp4" />
+              </video>
+            ) : (
+              <img
+                src={featured.poster}
+                alt=""
+                width="1200"
+                height="750"
+                loading="eager"
+                decoding="async"
+              />
+            )}
+            <span class="work-card__play" aria-hidden="true">▶</span>
+          </div>
+          <div class="work-card__meta">
+            <div>
+              <h3>{featured.title}</h3>
+              <p>
+                {featured.format} · {featured.platform} · {featured.vertical}
+              </p>
+            </div>
+            <span class="work-card__cta">Open Drive reel</span>
+          </div>
+        </a>
+      </div>
+    )
+  }
+
+  <div class="wrap work-grid">
     {
-      work.map((item, i) => (
+      rest.map((item, i) => (
         <a
           class={`work-card reveal-scale d${(i % 4) + 1}`}
           href={item.driveUrl}
           target="_blank"
           rel="noopener noreferrer"
-          style={`--i:${i}`}
         >
           <div class="work-card__media">
-            <img src={item.poster} alt="" width="480" height="600" loading="lazy" />
-            <span>Open reel</span>
+            {item.videoSrc ? (
+              <video
+                class="work-card__video"
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                poster={item.poster}
+                data-work-video
+              >
+                <source src={item.videoSrc} type="video/mp4" />
+              </video>
+            ) : (
+              <img src={item.poster} alt="" width="720" height="960" loading="lazy" decoding="async" />
+            )}
+            <span class="work-card__play" aria-hidden="true">▶</span>
           </div>
           <div class="work-card__meta">
             <h3>{item.title}</h3>
@@ -42,19 +104,21 @@ const work = await getWork();
 
 <style>
   .work {
-    padding-top: 4rem;
+    padding-top: clamp(3.5rem, 9vw, 6rem);
   }
 
   .work__head {
     display: grid;
-    gap: 1rem;
-    margin-bottom: 2rem;
+    gap: 0.85rem;
+    margin-bottom: 2.25rem;
   }
 
   @media (min-width: 900px) {
     .work__head {
-      grid-template-columns: 1.3fr 0.8fr;
+      grid-template-columns: 1.2fr 0.8fr;
       align-items: end;
+      gap: 2.5rem;
+      margin-bottom: 3rem;
     }
 
     .work__head .section-lead {
@@ -64,24 +128,29 @@ const work = await getWork();
     }
   }
 
-  .work-strip {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(16rem, 22rem);
-    gap: 1.1rem;
-    overflow-x: auto;
-    padding: 0.5rem max(1rem, calc((100% - var(--max)) / 2)) 1.5rem;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: thin;
-    cursor: grab;
+  .work-featured {
+    margin-bottom: 1.25rem;
   }
 
-  .work-strip:active {
-    cursor: grabbing;
+  .work-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem 1.15rem;
+  }
+
+  @media (min-width: 640px) {
+    .work-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .work-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 
   .work-card {
-    scroll-snap-align: start;
     text-decoration: none;
     color: inherit;
     display: block;
@@ -94,52 +163,88 @@ const work = await getWork();
   .work-card__media {
     position: relative;
     overflow: hidden;
-    aspect-ratio: 4 / 5;
-    border: 1px solid var(--line);
-    background: var(--panel);
+    aspect-ratio: 3 / 4;
+    background: var(--bg-2);
+    box-shadow: var(--shadow-md);
+    transition: box-shadow 0.45s var(--ease);
   }
 
-  .work-card__media img {
+  .work-card:hover .work-card__media,
+  .work-card:focus-visible .work-card__media {
+    box-shadow: var(--shadow-lg);
+  }
+
+  .work-card--feature .work-card__media {
+    aspect-ratio: 16 / 10;
+  }
+
+  .work-card__media img,
+  .work-card__video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.7s var(--ease);
+    transition: transform 0.8s var(--ease);
   }
 
-  .work-card__media span {
+  .work-card__play {
     position: absolute;
-    left: 0.85rem;
-    bottom: 0.85rem;
-    padding: 0.4rem 0.65rem;
-    background: var(--ink);
-    color: var(--snow);
+    inset: 50% auto auto 50%;
+    translate: -50% -50%;
+    width: 3.25rem;
+    height: 3.25rem;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: rgba(10, 10, 11, 0.72);
+    color: #fff;
     font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    transform: translateY(120%);
-    transition: transform 0.45s var(--ease);
+    backdrop-filter: blur(6px);
+    transition:
+      transform 0.45s var(--ease),
+      background 0.45s var(--ease);
   }
 
-  .work-card:hover .work-card__media img {
-    transform: scale(1.06) rotate(-0.5deg);
+  .work-card:hover .work-card__media img,
+  .work-card:hover .work-card__video,
+  .work-card:focus-visible .work-card__media img,
+  .work-card:focus-visible .work-card__video {
+    transform: scale(1.045);
   }
 
-  .work-card:hover .work-card__media span {
-    transform: none;
+  .work-card:hover .work-card__play,
+  .work-card:focus-visible .work-card__play {
+    transform: scale(1.06);
+    background: var(--signal);
   }
 
   .work-card__meta {
-    padding-top: 0.85rem;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.95rem;
   }
 
   .work-card__meta h3 {
-    font-size: 1.35rem;
-    margin-bottom: 0.2rem;
+    font-size: clamp(1.1rem, 2.4vw, 1.35rem);
+    margin-bottom: 0.25rem;
   }
 
   .work-card__meta p {
     color: var(--muted);
-    font-size: 0.85rem;
+    font-size: 0.84rem;
+  }
+
+  .work-card__cta {
+    flex: 0 0 auto;
+    font-size: 0.78rem;
+    font-weight: 650;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--signal);
+  }
+
+  .work-card--feature .work-card__meta h3 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
   }
 </style>
