@@ -3,13 +3,13 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import markdoc from '@astrojs/markdoc';
 import keystatic from '@keystatic/astro';
-import node from '@astrojs/node';
+import netlify from '@astrojs/netlify';
 
 export default defineConfig({
   output: 'static',
   site: 'https://renderhubmedia.com',
   compressHTML: true,
-  adapter: node({ mode: 'standalone' }),
+  adapter: netlify(),
   integrations: [react(), markdoc(), keystatic()],
   build: {
     inlineStylesheets: 'auto',
