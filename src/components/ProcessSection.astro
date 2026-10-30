@@ -15,37 +15,40 @@ const steps = await getProcess();
       </p>
     </div>
 
-    <ol class="process-flow">
-      {
-        steps.map((step, i) => (
-          <li class={`process-step reveal d${(i % 4) + 1}`}>
-            <div class="process-step__index">
-              <span>{String(i + 1).padStart(2, '0')}</span>
-              {i < steps.length - 1 && <span class="process-step__connector" aria-hidden="true" />}
-            </div>
-            <p class="process-step__label">{step.label}</p>
-            <h3>{step.title}</h3>
-            <p class="process-step__body">{step.body}</p>
-          </li>
-        ))
-      }
-    </ol>
+  </div>
 
-    <div class="process__foot reveal">
-      <a class="btn btn-primary" href="#contact">Start with a brief</a>
-    </div>
+  <ol class="process-flow" data-carousel aria-label="Process steps">
+    {
+      steps.map((step, i) => (
+        <li class={`process-step reveal d${(i % 4) + 1}`}>
+          <div class="process-step__index">
+            <span>{String(i + 1).padStart(2, '0')}</span>
+            {i < steps.length - 1 && <span class="process-step__connector" aria-hidden="true" />}
+          </div>
+          <p class="process-step__label">{step.label}</p>
+          <h3>{step.title}</h3>
+          <p class="process-step__body">{step.body}</p>
+        </li>
+      ))
+    }
+  </ol>
+  <p class="carousel-hint wrap">Swipe to browse →</p>
+
+  <div class="wrap process__foot reveal">
+    <a class="btn btn-primary" href="#contact">Start with a brief</a>
   </div>
 </section>
 
 <style>
   .process {
     background: var(--surface);
+    padding-block: clamp(2.75rem, 7vw, 5rem);
   }
 
   .process__head {
     display: grid;
     gap: 0.85rem;
-    margin-bottom: 2.75rem;
+    margin-bottom: 1.75rem;
   }
 
   @media (min-width: 900px) {
@@ -65,20 +68,34 @@ const steps = await getProcess();
   .process-flow {
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 0.25rem max(1rem, calc((100% - var(--max)) / 2)) 0.5rem;
     display: grid;
-    gap: 1.75rem;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(78%, 16rem);
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
   }
 
   @media (min-width: 900px) {
     .process-flow {
       grid-template-columns: repeat(4, 1fr);
+      grid-auto-flow: dense;
+      grid-auto-columns: unset;
+      overflow: visible;
+      scroll-snap-type: none;
+      width: min(100% - 2rem, var(--max));
+      margin-inline: auto;
+      padding-inline: 0;
       gap: 1.25rem;
     }
   }
 
   .process-step {
     position: relative;
+    scroll-snap-align: start;
   }
 
   .process-step__index {
@@ -139,6 +156,19 @@ const steps = await getProcess();
   }
 
   .process__foot {
-    margin-top: 2.5rem;
+    margin-top: 1.75rem;
+  }
+
+  .carousel-hint {
+    margin-top: 0.35rem;
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 650;
+  }
+
+  @media (min-width: 900px) {
+    .carousel-hint {
+      display: none;
+    }
   }
 </style>

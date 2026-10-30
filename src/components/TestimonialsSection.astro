@@ -6,26 +6,25 @@ const items = await getTestimonials();
 {
   items.length > 0 && (
     <section class="section testimonials" id="comments" aria-labelledby="comments-title">
-      <div class="wrap">
-        <div class="testimonials__head">
-          <p class="kicker reveal">Client comments</p>
-          <h2 class="section-title reveal d1" id="comments-title">What buyers say after the first pack</h2>
-        </div>
-
-        <div class="testimonials-grid">
-          {items.map((item, i) => (
-            <figure class={`testimonial reveal-scale d${(i % 4) + 1}`}>
-              <blockquote>
-                <p>“{item.quote}”</p>
-              </blockquote>
-              <figcaption>
-                <strong>{item.name}</strong>
-                <span>{item.role}</span>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
+      <div class="wrap testimonials__head">
+        <p class="kicker reveal">Client comments</p>
+        <h2 class="section-title reveal d1" id="comments-title">What buyers say after the first pack</h2>
       </div>
+
+      <div class="testimonials-carousel" data-carousel aria-label="Client comments carousel">
+        {items.map((item, i) => (
+          <figure class={`testimonial reveal-scale d${(i % 4) + 1}`}>
+            <blockquote>
+              <p>“{item.quote}”</p>
+            </blockquote>
+            <figcaption>
+              <strong>{item.name}</strong>
+              <span>{item.role}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+      <p class="carousel-hint wrap">Swipe to browse →</p>
     </section>
   )
 }
@@ -34,41 +33,56 @@ const items = await getTestimonials();
   .testimonials {
     background: var(--surface);
     border-block: 1px solid var(--line);
+    padding-block: clamp(2.75rem, 7vw, 5rem);
   }
 
   .testimonials__head {
-    margin-bottom: 2.25rem;
+    margin-bottom: 1.5rem;
   }
 
-  .testimonials-grid {
+  .testimonials-carousel {
     display: grid;
-    gap: 1.25rem;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(85%, 22rem);
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 0.25rem max(1rem, calc((100% - var(--max)) / 2)) 0.5rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
   }
 
   @media (min-width: 800px) {
-    .testimonials-grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
+    .testimonials-carousel {
+      grid-auto-columns: minmax(40%, 24rem);
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .testimonials-carousel {
+      grid-auto-columns: minmax(28%, 24rem);
     }
   }
 
   .testimonial {
     margin: 0;
-    padding: 1.5rem 1.35rem;
-    background: var(--surface);
+    scroll-snap-align: start;
+    padding: 1.4rem 1.3rem;
+    background: var(--bg);
     border: 1px solid var(--line);
     border-top: 2px solid var(--signal);
     border-radius: 1rem;
     box-shadow: var(--shadow-sm);
+    min-height: 100%;
   }
 
   .testimonial blockquote {
-    margin: 0 0 1.25rem;
+    margin: 0 0 1.1rem;
   }
 
   .testimonial p {
     font-family: var(--font-display);
-    font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+    font-size: clamp(1.02rem, 2.2vw, 1.15rem);
     line-height: 1.35;
     letter-spacing: -0.025em;
     color: var(--ink-soft);
@@ -86,5 +100,18 @@ const items = await getTestimonials();
   .testimonial span {
     color: var(--muted);
     font-size: 0.84rem;
+  }
+
+  .carousel-hint {
+    margin-top: 0.35rem;
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 650;
+  }
+
+  @media (min-width: 1100px) {
+    .carousel-hint {
+      display: none;
+    }
   }
 </style>

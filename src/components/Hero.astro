@@ -22,21 +22,28 @@ const previews = work.slice(0, 3);
       <p class="hero-support">{site.supporting}</p>
       <div class="hero-ctas">
         <a class="btn btn-primary" href="#contact">Book a brief</a>
-        <a class="btn btn-ghost" href="#work">View selected work</a>
+        <a class="btn btn-ghost" href="#work">View work</a>
       </div>
     </div>
 
-    <div class="hero-showreel" aria-hidden="true">
+    <div class="hero-showreel hero-showreel--desktop" aria-hidden="true">
       {
         previews.map((item, i) => (
-          <a
-            class={`hero-frame hero-frame--${i + 1}`}
-            href="#work"
-            tabindex="-1"
-            style={`--i:${i}`}
-          >
+          <a class={`hero-frame hero-frame--${i + 1}`} href="#work" tabindex="-1">
             <img src={item.poster} alt="" width="480" height="640" loading="eager" />
             <span>Showreel</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="hero-strip" aria-label="Featured work preview">
+    <div class="hero-strip__track">
+      {
+        previews.map((item) => (
+          <a class="hero-strip__card" href="#work">
+            <img src={item.poster} alt="" width="320" height="400" loading="eager" />
           </a>
         ))
       }
@@ -47,12 +54,18 @@ const previews = work.slice(0, 3);
 <style>
   .hero {
     position: relative;
-    min-height: 100svh;
     display: grid;
-    align-items: center;
+    align-items: end;
     padding-top: var(--header-h);
-    padding-bottom: 2.5rem;
     overflow: clip;
+  }
+
+  @media (min-width: 980px) {
+    .hero {
+      min-height: 100svh;
+      align-items: center;
+      padding-bottom: 2rem;
+    }
   }
 
   .hero-media {
@@ -89,22 +102,23 @@ const previews = work.slice(0, 3);
     position: relative;
     z-index: 2;
     display: grid;
-    gap: 2.5rem;
+    gap: 1.25rem;
     align-items: center;
-    padding-block: clamp(2rem, 7vh, 4rem);
+    padding-block: 1.5rem 1rem;
   }
 
   @media (min-width: 980px) {
     .hero-grid {
       grid-template-columns: 1.05fr 0.95fr;
       gap: 2rem;
-      min-height: calc(100svh - var(--header-h) - 2.5rem);
+      min-height: calc(100svh - var(--header-h) - 2rem);
+      padding-block: 2rem;
     }
   }
 
   .hero-eyebrow {
-    margin: 0 0 0.85rem;
-    font-size: 0.7rem;
+    margin: 0 0 0.65rem;
+    font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -113,10 +127,10 @@ const previews = work.slice(0, 3);
   }
 
   .hero-brand {
-    margin: 0 0 1rem;
+    margin: 0 0 0.75rem;
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: clamp(2.5rem, 8vw, 5.6rem);
+    font-size: clamp(2.35rem, 10vw, 5.6rem);
     line-height: 0.88;
     letter-spacing: -0.05em;
     display: flex;
@@ -131,8 +145,8 @@ const previews = work.slice(0, 3);
   }
 
   .hero-copy {
-    margin: 0 0 0.95rem;
-    font-size: clamp(1.2rem, 2.8vw, 1.75rem);
+    margin: 0 0 0.7rem;
+    font-size: clamp(1.1rem, 3.6vw, 1.75rem);
     max-width: 18ch;
     color: var(--ink-soft);
     font-weight: 650;
@@ -141,31 +155,46 @@ const previews = work.slice(0, 3);
   }
 
   .hero-support {
-    margin: 0 0 1.7rem;
+    margin: 0 0 1.25rem;
     max-width: 34rem;
     color: var(--muted);
-    font-size: clamp(0.98rem, 2vw, 1.06rem);
+    font-size: clamp(0.92rem, 2vw, 1.06rem);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
     animation: rise 0.95s var(--ease) 0.16s both;
+  }
+
+  @media (min-width: 720px) {
+    .hero-support {
+      -webkit-line-clamp: unset;
+      display: block;
+      overflow: visible;
+    }
   }
 
   .hero-ctas {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: 0.65rem;
     animation: rise 0.95s var(--ease) 0.22s both;
   }
 
-  .hero-showreel {
-    position: relative;
-    min-height: 22rem;
+  .hero-showreel--desktop {
     display: none;
   }
 
   @media (min-width: 980px) {
-    .hero-showreel {
+    .hero-showreel--desktop {
       display: block;
+      position: relative;
       min-height: 28rem;
       animation: rise 1s var(--ease) 0.18s both;
+    }
+
+    .hero-strip {
+      display: none;
     }
   }
 
@@ -228,10 +257,46 @@ const previews = work.slice(0, 3);
     z-index: 4;
   }
 
+  .hero-strip {
+    position: relative;
+    z-index: 2;
+    padding: 0 0 1.25rem;
+  }
+
+  .hero-strip__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(42%, 9.5rem);
+    gap: 0.75rem;
+    overflow-x: auto;
+    padding: 0.15rem max(1rem, calc((100% - var(--max)) / 2)) 0.35rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hero-strip__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hero-strip__card {
+    scroll-snap-align: start;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border-radius: 0.85rem;
+    box-shadow: var(--shadow-md);
+  }
+
+  .hero-strip__card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
   @keyframes rise {
     from {
       opacity: 0;
-      transform: translateY(1.25rem);
+      transform: translateY(1.1rem);
     }
     to {
       opacity: 1;
@@ -251,8 +316,8 @@ const previews = work.slice(0, 3);
   @media (max-width: 720px) {
     .hero-media__veil {
       background:
-        linear-gradient(180deg, rgba(246, 247, 249, 0.45) 0%, rgba(246, 247, 249, 0.9) 55%, var(--bg) 100%),
-        linear-gradient(90deg, rgba(246, 247, 249, 0.75), rgba(246, 247, 249, 0.25) 90%);
+        linear-gradient(180deg, rgba(246, 247, 249, 0.55) 0%, rgba(246, 247, 249, 0.92) 58%, var(--bg) 100%),
+        linear-gradient(90deg, rgba(246, 247, 249, 0.8), rgba(246, 247, 249, 0.3) 90%);
     }
 
     .hero-brand {
@@ -260,7 +325,8 @@ const previews = work.slice(0, 3);
     }
 
     .hero-ctas .btn {
-      flex: 1 1 9.5rem;
+      flex: 1 1 8.5rem;
+      min-height: 2.85rem;
     }
   }
 </style>

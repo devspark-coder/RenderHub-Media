@@ -77,4 +77,18 @@ export function initReveal() {
     card?.addEventListener('focusin', play);
     card?.addEventListener('focusout', pause);
   });
+
+  // Wheel → horizontal scroll for carousels on desktop
+  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((strip) => {
+    strip.addEventListener(
+      'wheel',
+      (e) => {
+        if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+        if (strip.scrollWidth <= strip.clientWidth + 8) return;
+        strip.scrollLeft += e.deltaY;
+        e.preventDefault();
+      },
+      { passive: false },
+    );
+  });
 }
