@@ -1,0 +1,106 @@
+---
+import { getProcess } from '../lib/content';
+const steps = await getProcess();
+---
+
+<section class="section process" id="process" aria-labelledby="process-title">
+  <div class="wrap">
+    <div class="process__head">
+      <p class="kicker reveal">Process</p>
+      <h2 class="section-title reveal d1" id="process-title">From brief to shipped renders</h2>
+    </div>
+
+    <ol class="process-track">
+      {
+        steps.map((step, i) => (
+          <li class={`process-step reveal d${(i % 4) + 1}`}>
+            <div class="process-step__index">{step.label}</div>
+            <h3>{step.title}</h3>
+            <p>{step.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .process__head {
+    margin-bottom: 2.5rem;
+  }
+
+  .process-track {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    position: relative;
+  }
+
+  @media (min-width: 900px) {
+    .process-track {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+
+    .process-track::before {
+      content: '';
+      position: absolute;
+      top: 1.15rem;
+      left: 8%;
+      right: 8%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--cobalt));
+      transform-origin: left;
+      animation: line-draw 1.2s var(--ease) both;
+    }
+  }
+
+  .process-step {
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.65);
+    border: 1px solid var(--line);
+    position: relative;
+    transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  }
+
+  .process-step:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgba(15, 23, 36, 0.08);
+  }
+
+  .process-step__index {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.3rem;
+    height: 2.3rem;
+    margin-bottom: 1.1rem;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--snow);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  .process-step h3 {
+    font-size: 1.7rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .process-step p {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  @keyframes line-draw {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+</style>

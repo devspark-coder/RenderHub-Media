@@ -1,0 +1,281 @@
+---
+import { getSite } from '../lib/content';
+const site = await getSite();
+---
+
+<section class="hero" id="top" aria-labelledby="hero-brand">
+  <div class="hero-stage" data-parallax aria-hidden="true">
+    <div class="hub-orb hub-orb--a"></div>
+    <div class="hub-orb hub-orb--b"></div>
+    <div class="hero-grid">
+      <div class="hero-pane hero-pane--lg">
+        <span>RENDER</span>
+        <strong>01</strong>
+      </div>
+      <div class="hero-pane">
+        <span>CUT</span>
+        <strong>02</strong>
+      </div>
+      <div class="hero-pane">
+        <span>SHIP</span>
+        <strong>03</strong>
+      </div>
+      <div class="hero-pane hero-pane--wide">
+        <span>HUB LIVE</span>
+        <em>ad creative pipeline</em>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap hero-content">
+    <p class="hero-brand" id="hero-brand">{site.name}</p>
+    <h1 class="hero-copy">{site.tagline}</h1>
+    <p class="hero-support">{site.supporting}</p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="#contact">Open the hub</a>
+      <a class="btn btn-ghost" href="#work">Watch the work</a>
+    </div>
+  </div>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>UGC</span><span>Avatars</span><span>AI Animation</span><span>Song Ads</span>
+      <span>Meta</span><span>TikTok</span><span>YouTube</span><span>Performance</span>
+      <span>UGC</span><span>Avatars</span><span>AI Animation</span><span>Song Ads</span>
+      <span>Meta</span><span>TikTok</span><span>YouTube</span><span>Performance</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    align-items: end;
+    padding-top: 5rem;
+    overflow: clip;
+  }
+
+  .hero-stage {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    will-change: transform;
+    background:
+      linear-gradient(120deg, transparent 40%, rgba(243, 246, 251, 0.55) 100%),
+      linear-gradient(180deg, transparent 35%, var(--snow) 92%),
+      var(--mist);
+  }
+
+  .hub-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    pointer-events: none;
+  }
+
+  .hub-orb--a {
+    width: min(42vw, 26rem);
+    height: min(42vw, 26rem);
+    right: 8%;
+    top: 12%;
+    background: var(--glow);
+    animation: float 9s var(--ease) infinite alternate;
+  }
+
+  .hub-orb--b {
+    width: min(30vw, 18rem);
+    height: min(30vw, 18rem);
+    left: 6%;
+    bottom: 22%;
+    background: rgba(37, 99, 235, 0.16);
+    animation: float 11s var(--ease) infinite alternate-reverse;
+  }
+
+  .hero-grid {
+    position: absolute;
+    right: max(1rem, calc((100% - var(--max)) / 2));
+    top: 18%;
+    width: min(48vw, 28rem);
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 0.65rem;
+    animation: stage-in 1.1s var(--ease) 0.15s both;
+  }
+
+  .hero-pane {
+    min-height: 7.5rem;
+    padding: 1rem;
+    border: 1px solid var(--line-strong);
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.45s var(--ease), background 0.45s var(--ease);
+  }
+
+  .hero-pane:hover {
+    transform: translateY(-4px) rotate(-0.4deg);
+    background: rgba(255, 255, 255, 0.82);
+  }
+
+  .hero-pane--lg {
+    grid-row: span 2;
+    min-height: 16rem;
+    background: linear-gradient(160deg, rgba(8, 145, 178, 0.18), rgba(255, 255, 255, 0.7));
+  }
+
+  .hero-pane--wide {
+    grid-column: 1 / -1;
+    min-height: 4.5rem;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .hero-pane span {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: var(--cyan-deep);
+  }
+
+  .hero-pane strong {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  .hero-pane em {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding-block: 3rem 5.5rem;
+    max-width: 40rem;
+  }
+
+  .hero-brand {
+    margin: 0 0 0.9rem;
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 10vw, 6.2rem);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    animation: rise 0.9s var(--ease) both;
+  }
+
+  .hero-copy {
+    margin: 0 0 1rem;
+    font-size: clamp(1.35rem, 3vw, 2rem);
+    max-width: 16ch;
+    color: var(--ink-soft);
+    animation: rise 0.9s var(--ease) 0.1s both;
+  }
+
+  .hero-support {
+    margin: 0 0 1.75rem;
+    max-width: 34rem;
+    color: var(--muted);
+    animation: rise 0.9s var(--ease) 0.18s both;
+  }
+
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    animation: rise 0.9s var(--ease) 0.26s both;
+  }
+
+  .marquee {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 3;
+    border-block: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(8px);
+    overflow: hidden;
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 2.5rem;
+    width: max-content;
+    padding: 0.85rem 0;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    animation: marquee 28s linear infinite;
+  }
+
+  .marquee-track span {
+    white-space: nowrap;
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(1.5rem);
+      filter: blur(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+  }
+
+  @keyframes stage-in {
+    from {
+      opacity: 0;
+      transform: translateX(2rem) rotate(2deg);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes float {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(2%, -4%, 0);
+    }
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (max-width: 860px) {
+    .hero-grid {
+      width: min(92vw, 22rem);
+      top: auto;
+      bottom: 18%;
+      opacity: 0.9;
+    }
+
+    .hero-pane--lg {
+      min-height: 10rem;
+    }
+
+    .hero-content {
+      padding-bottom: 8rem;
+    }
+  }
+</style>

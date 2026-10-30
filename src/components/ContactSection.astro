@@ -1,0 +1,134 @@
+---
+import { getSite } from '../lib/content';
+const site = await getSite();
+const waHref = site.whatsapp ? `https://wa.me/${site.whatsapp}` : '';
+const mailHref = `mailto:${site.email}?subject=${encodeURIComponent('RenderHub Media brief')}`;
+---
+
+<section class="section contact" id="contact" aria-labelledby="contact-title">
+  <div class="wrap contact__shell reveal-scale">
+    <div class="contact__copy">
+      <p class="kicker">Contact</p>
+      <h2 class="section-title" id="contact-title">Plug your accounts into the hub</h2>
+      <p class="section-lead">
+        Tell us the bottleneck — volume, formats, turnaround — and we’ll map the RenderHub workflow.
+      </p>
+      <div class="contact-links">
+        {waHref && <a href={waHref} target="_blank" rel="noopener noreferrer">WhatsApp {site.whatsappDisplay}</a>}
+        <a href={mailHref}>{site.email}</a>
+        <span>{site.location}</span>
+      </div>
+    </div>
+
+    <form
+      class="contact-form"
+      method="POST"
+      action={site.formspreeEndpoint || undefined}
+      data-mailto={mailHref}
+    >
+      <label>
+        <span>Name</span>
+        <input type="text" name="name" required autocomplete="name" />
+      </label>
+      <label>
+        <span>Work email</span>
+        <input type="email" name="email" required autocomplete="email" />
+      </label>
+      <label>
+        <span>What’s stuck?</span>
+        <textarea name="message" rows="5" required placeholder="Accounts, volume, formats, timeline…"></textarea>
+      </label>
+      <button class="btn btn-primary" type="submit">Send brief</button>
+      {!site.formspreeEndpoint && <p class="hint">Opens email until Formspree is set in admin.</p>}
+    </form>
+  </div>
+</section>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('.contact-form');
+  form?.addEventListener('submit', (event) => {
+    if (form.getAttribute('action')) return;
+    event.preventDefault();
+    const data = new FormData(form);
+    const body = `Name: ${data.get('name')}\nEmail: ${data.get('email')}\n\n${data.get('message')}`;
+    const base = form.dataset.mailto || 'mailto:';
+    window.location.href = `${base}&body=${encodeURIComponent(body)}`;
+  });
+</script>
+
+<style>
+  .contact {
+    padding-bottom: 5rem;
+  }
+
+  .contact__shell {
+    display: grid;
+    gap: 2rem;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.85), rgba(207, 244, 252, 0.45)),
+      var(--panel);
+    border: 1px solid var(--line-strong);
+    box-shadow: 0 30px 80px rgba(15, 23, 36, 0.08);
+  }
+
+  @media (min-width: 900px) {
+    .contact__shell {
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+  }
+
+  .contact-links {
+    display: grid;
+    gap: 0.45rem;
+    color: var(--muted);
+  }
+
+  .contact-links a {
+    font-weight: 650;
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  .contact-form {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .contact-form label {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .contact-form span {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    padding: 0.85rem 0.95rem;
+    border: 1px solid var(--line-strong);
+    background: rgba(255, 255, 255, 0.8);
+    color: var(--ink);
+    transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    outline: none;
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 4px var(--glow);
+  }
+
+  .hint {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+</style>

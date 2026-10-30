@@ -1,0 +1,64 @@
+---
+import '../styles/global.css';
+import { getSite } from '../lib/content';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const site = await getSite();
+const {
+  title = `${site.name} — Render. Cut. Ship.`,
+  description = site.supporting,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f3f6fb" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={site.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={site.url} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Sora:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <slot />
+    <script>
+      import { initReveal } from '../scripts/reveal';
+      initReveal();
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  .skip {
+    position: absolute;
+    left: 1rem;
+    top: -3rem;
+    z-index: 100;
+    padding: 0.5rem 0.75rem;
+    background: var(--ink);
+    color: var(--snow);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .skip:focus {
+    top: 1rem;
+  }
+</style>

@@ -1,0 +1,36 @@
+---
+import { getSite } from '../lib/content';
+const site = await getSite();
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap site-footer__inner">
+    <p class="site-footer__brand">{site.name}</p>
+    <p class="site-footer__copy">© {year} · {site.location}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--line);
+    padding-block: 1.5rem 2rem;
+  }
+
+  .site-footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .site-footer__brand {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+  }
+
+  .site-footer__copy {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+</style>

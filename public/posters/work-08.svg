@@ -1,0 +1,14 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 800">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f1724"/>
+      <stop offset="100%" stop-color="#f3f6fb"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="800" fill="url(#g)"/>
+  <circle cx="480" cy="200" r="90" fill="#0891b2" fill-opacity="0.35"/>
+  <rect x="70" y="280" width="220" height="280" fill="#fff" fill-opacity="0.35" transform="rotate(-8 180 420)"/>
+  <rect x="250" y="300" width="220" height="280" fill="#fff" fill-opacity="0.22" transform="rotate(6 360 440)"/>
+  <text x="48" y="700" fill="#0f1724" font-family="Georgia, serif" font-size="46">SONG</text>
+  <text x="48" y="742" fill="#2a3548" font-family="Segoe UI, sans-serif" font-size="15" letter-spacing="2">RENDERHUB / W-08</text>
+</svg>
