@@ -21,6 +21,7 @@ const stats = defineCollection({
     label: z.string(),
     value: z.number(),
     suffix: z.string().optional().default('+'),
+    display: z.string().optional().default(''),
     order: z.number(),
   }),
 });

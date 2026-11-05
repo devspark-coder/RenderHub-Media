@@ -64,8 +64,12 @@ export default config({
         value: fields.integer({ label: 'Number', description: 'Counting target, e.g. 120' }),
         suffix: fields.text({
           label: 'Suffix',
-          description: 'Optional — e.g. +, K, M',
+          description: 'Optional — e.g. +, k+, M',
           defaultValue: '+',
+        }),
+        display: fields.text({
+          label: 'Custom display (optional)',
+          description: 'If set, shows this text instead of counting — e.g. 1–7',
         }),
         order: fields.integer({ label: 'Order', defaultValue: 1 }),
       },

@@ -20,8 +20,14 @@ const stats = await getStats();
             <div class={`stat reveal d${(i % 4) + 1}`} data-tilt-card style={`--s:${i}`}>
               <div class="stat__face">
                 <dt class="stat__value">
-                  <span data-count={stat.value}>0</span>
-                  {stat.suffix}
+                  {stat.display ? (
+                    <span>{stat.display}</span>
+                  ) : (
+                    <>
+                      <span data-count={stat.value}>0</span>
+                      {stat.suffix}
+                    </>
+                  )}
                 </dt>
                 <dd class="stat__label">{stat.label}</dd>
               </div>
@@ -104,10 +110,11 @@ const stats = await getStats();
     gap: 0.9rem;
   }
 
-  @media (min-width: 900px) {
+  @media (min-width: 700px) {
     .stats-grid {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 18rem));
       gap: 1.1rem;
+      justify-content: start;
     }
   }
 
