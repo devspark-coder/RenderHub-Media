@@ -118,6 +118,26 @@ const mailHref = `mailto:${site.email}?subject=${encodeURIComponent('RenderHub M
     max-width: 14ch;
   }
 
+  @media (max-width: 720px) {
+    .contact .section-title {
+      max-width: 100%;
+    }
+
+    .contact__shell {
+      padding: 1.25rem;
+      border-radius: 1.15rem;
+      gap: 1.5rem;
+    }
+
+    .contact-form__actions {
+      flex-direction: column;
+    }
+
+    .contact-form__actions .btn {
+      width: 100%;
+    }
+  }
+
   .contact-channels {
     list-style: none;
     margin: 1.5rem 0 0;
