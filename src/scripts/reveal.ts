@@ -125,6 +125,20 @@ export function initReveal() {
   );
   counters.forEach((el) => countIo.observe(el));
 
+  // Work marquee only while the section is visible
+  const workLoop = document.querySelector<HTMLElement>('[data-work-loop]');
+  if (workLoop) {
+    const loopIo = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          workLoop.classList.toggle('is-active', entry.isIntersecting);
+        }
+      },
+      { threshold: 0.2, rootMargin: '0px 0px -5% 0px' },
+    );
+    loopIo.observe(workLoop);
+  }
+
   // Play short work videos on hover / in view when present
   document.querySelectorAll<HTMLVideoElement>('[data-work-video]').forEach((video) => {
     const card = video.closest('.work-card');
