@@ -8,10 +8,10 @@ const steps = await getProcess();
     <div class="process__head">
       <div>
         <p class="kicker reveal">How we work</p>
-        <h2 class="section-title reveal d1" id="process-title">Brief in. Renders out.</h2>
+        <h2 class="section-title reveal d1" id="process-title">From Raw Footage to Ready-to-Post</h2>
       </div>
       <p class="section-lead reveal d2">
-        A short pipeline built for media pace — clear ownership at every step, no mystery middle.
+        A simple, streamlined editing process that turns your footage into professional, engaging content — ready for every platform.
       </p>
     </div>
 
@@ -25,7 +25,6 @@ const steps = await getProcess();
             <span>{String(i + 1).padStart(2, '0')}</span>
             {i < steps.length - 1 && <span class="process-step__connector" aria-hidden="true" />}
           </div>
-          <p class="process-step__label">{step.label}</p>
           <h3>{step.title}</h3>
           <p class="process-step__body">{step.body}</p>
         </li>
@@ -35,7 +34,7 @@ const steps = await getProcess();
   <p class="carousel-hint wrap">Swipe to browse →</p>
 
   <div class="wrap process__foot reveal">
-    <a class="btn btn-primary" href="#contact">Start with a brief</a>
+    <a class="btn btn-primary" href="#contact">Start Your Project</a>
   </div>
 </section>
 
