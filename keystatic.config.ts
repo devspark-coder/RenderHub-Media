@@ -83,6 +83,14 @@ export default config({
         name: fields.slug({ name: { label: 'Name' } }),
         role: fields.text({ label: 'Role / company' }),
         quote: fields.text({ label: 'Comment', multiline: true }),
+        videoUrl: fields.text({
+          label: 'Video URL (CDN)',
+          description: 'Paste Bunny/Cloudflare/Cloudinary mp4 URL. Leave blank until hosted. Do NOT put big videos in the repo.',
+        }),
+        poster: fields.text({
+          label: 'Poster image',
+          description: 'Small jpg/webp path or CDN URL, e.g. /testimonials/daniel.jpg',
+        }),
         order: fields.integer({ label: 'Order', defaultValue: 1 }),
       },
     }),

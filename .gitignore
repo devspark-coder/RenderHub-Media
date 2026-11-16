@@ -25,3 +25,7 @@ pnpm-debug.log*
 
 # Local Netlify folder
 .netlify
+
+# Large local review clips (preview only — use Supabase URLs in production)
+Videos/
+public/testimonials/*.mp4

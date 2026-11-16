@@ -32,6 +32,8 @@ const testimonials = defineCollection({
     name: z.string(),
     role: z.string(),
     quote: z.string(),
+    videoUrl: z.string().optional().default(''),
+    poster: z.string().optional().default(''),
     order: z.number(),
   }),
 });

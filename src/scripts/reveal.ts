@@ -125,19 +125,73 @@ export function initReveal() {
   );
   counters.forEach((el) => countIo.observe(el));
 
-  // Work marquee only while the section is visible
-  const workLoop = document.querySelector<HTMLElement>('[data-work-loop]');
-  if (workLoop) {
+  // Marquees only while their section is visible
+  const bindLoop = (selector: string) => {
+    const el = document.querySelector<HTMLElement>(selector);
+    if (!el) return;
     const loopIo = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          workLoop.classList.toggle('is-active', entry.isIntersecting);
+          el.classList.toggle('is-active', entry.isIntersecting);
+          if (!entry.isIntersecting) {
+            el.querySelectorAll<HTMLVideoElement>('video').forEach((v) => {
+              v.pause();
+              v.closest('.testimonial__media')?.classList.remove('is-playing');
+            });
+          }
         }
       },
       { threshold: 0.2, rootMargin: '0px 0px -5% 0px' },
     );
-    loopIo.observe(workLoop);
-  }
+    loopIo.observe(el);
+  };
+  bindLoop('[data-work-loop]');
+  bindLoop('[data-testimonial-loop]');
+
+  // Testimonial clips: muted autoplay when card is on screen (one at a time)
+  const ensureVideoSrc = (video: HTMLVideoElement) => {
+    const src = video.dataset.src;
+    if (!src || video.getAttribute('src')) return;
+    const source = video.querySelector('source');
+    if (source) source.src = src;
+    video.src = src;
+    video.load();
+  };
+
+  const pauseAllTestimonialVideos = (except?: HTMLVideoElement) => {
+    document.querySelectorAll<HTMLVideoElement>('[data-testimonial-video] video').forEach((other) => {
+      if (other === except) return;
+      other.pause();
+      other.closest('.testimonial__media')?.classList.remove('is-playing');
+    });
+  };
+
+  const videoIo = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        const wrap = entry.target as HTMLElement;
+        const video = wrap.querySelector<HTMLVideoElement>('video');
+        if (!video) continue;
+
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.55) {
+          ensureVideoSrc(video);
+          video.muted = true;
+          video.loop = true;
+          pauseAllTestimonialVideos(video);
+          wrap.classList.add('is-playing');
+          void video.play().catch(() => {});
+        } else {
+          video.pause();
+          wrap.classList.remove('is-playing');
+        }
+      }
+    },
+    { threshold: [0.55, 0.7] },
+  );
+
+  document.querySelectorAll<HTMLElement>('[data-testimonial-video]').forEach((wrap) => {
+    videoIo.observe(wrap);
+  });
 
   // Play short work videos on hover / in view when present
   document.querySelectorAll<HTMLVideoElement>('[data-work-video]').forEach((video) => {

@@ -10,32 +10,47 @@
 | What | Keystatic collection | On the site |
 | --- | --- | --- |
 | Brand / tagline / email | **Site settings** | Hero + contact |
-| Counting numbers (clients, videos…) | **Impact stats** | Dark strip under hero (`#impact`) |
-| Client comments | **Testimonials** | Comments section (`#comments`) |
-| Drive links + posters / short videos | **Work** | Work grid (`#work`) |
-| Format list | **Formats** | Formats section |
-| Process steps | **Process** | Process section |
+| Counting numbers | **Impact stats** | `#impact` |
+| Client comments + review videos | **Testimonials** | `#comments` |
+| Drive links + work posters | **Work** | `#work` |
+| Format list | **Formats** | Formats |
+| Process steps | **Process** | Process |
 
-## Drive links (full reels)
+## Review videos — Supabase Storage (card-free free tier)
 
-In **Work** → each item → **Drive / reel URL**  
-Paste the Google Drive (or other) link. Cards open that URL.
+Firebase Storage and Cloudflare R2 both ask for a card now. Use **Supabase** instead.
 
-## Short videos (replace posters later)
+### Baby steps
 
-1. Put files in `public/videos/` (e.g. `work-01.mp4`)
-2. In **Work** → **Short video path** → `/videos/work-01.mp4`
-3. Keep the poster as cover; video plays on hover when set
+1. Go to [supabase.com](https://supabase.com/) → **Start your project** / sign in (GitHub login is easiest)
+2. Click **New project**
+3. Pick org → name it `renderhub-media` → set a DB password (save it) → region near you → **Create project**
+4. Wait until the project is ready
+5. Left sidebar → **Storage**
+6. Click **New bucket**
+7. Name: `testimonials`
+8. Turn **Public bucket** **ON**
+9. Click **Create bucket**
+10. Open `testimonials` → **Upload file**
+11. Upload your 8s `.mp4` files
+12. Click a file → **Copy URL** / **Get URL**
+13. Paste into `/keystatic` → **Testimonials** → **Video URL (CDN)** → save
 
-## Impact numbers
+### Public URL format (typical)
 
-In **Impact stats**: set **Number**, **Suffix** (`+`), and **Label**.  
-They animate when the section scrolls into view.
+`https://<project-ref>.supabase.co/storage/v1/object/public/testimonials/daniel-wilson.mp4`
 
-## Client comments
+### How the site plays them
 
-In **Testimonials**: **Comment**, **Name**, **Role / company**.
+- Forced **muted**
+- **Loops** the 8s clip
+- Autoplays only when that card is on screen
+- Pauses when it leaves the screen
+
+## Drive links (work reels)
+
+**Work** → **Drive / reel URL**
 
 ## Production
 
-Cloud editing needs GitHub storage in `keystatic.config.ts` (`storage.kind: 'github'`).
+Cloud Keystatic editing needs `storage.kind: 'github'` in `keystatic.config.ts`.
