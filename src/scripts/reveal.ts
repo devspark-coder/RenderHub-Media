@@ -136,7 +136,7 @@ export function initReveal() {
           if (!entry.isIntersecting) {
             el.querySelectorAll<HTMLVideoElement>('video').forEach((v) => {
               v.pause();
-              v.closest('.testimonial__media')?.classList.remove('is-playing');
+              v.classList.remove('is-playing');
             });
           }
         }
@@ -148,65 +148,52 @@ export function initReveal() {
   bindLoop('[data-work-loop]');
   bindLoop('[data-testimonial-loop]');
 
-  // Testimonial clips: muted autoplay when card is on screen (one at a time)
-  const ensureVideoSrc = (video: HTMLVideoElement) => {
-    const src = video.dataset.src;
-    if (!src || video.getAttribute('src')) return;
-    const source = video.querySelector('source');
-    if (source) source.src = src;
-    video.src = src;
-    video.load();
+  // Work preview clips: show first frame ASAP, muted loop while on screen
+  const playWorkVideo = (video: HTMLVideoElement) => {
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.classList.add('is-playing');
+    void video.play().catch(() => {});
   };
 
-  const pauseAllTestimonialVideos = (except?: HTMLVideoElement) => {
-    document.querySelectorAll<HTMLVideoElement>('[data-testimonial-video] video').forEach((other) => {
-      if (other === except) return;
-      other.pause();
-      other.closest('.testimonial__media')?.classList.remove('is-playing');
-    });
+  const pauseWorkVideo = (video: HTMLVideoElement) => {
+    video.pause();
+    video.classList.remove('is-playing');
   };
 
-  const videoIo = new IntersectionObserver(
+  const workVideoIo = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
-        const wrap = entry.target as HTMLElement;
-        const video = wrap.querySelector<HTMLVideoElement>('video');
-        if (!video) continue;
-
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.55) {
-          ensureVideoSrc(video);
-          video.muted = true;
-          video.loop = true;
-          pauseAllTestimonialVideos(video);
-          wrap.classList.add('is-playing');
-          void video.play().catch(() => {});
+        const video = entry.target as HTMLVideoElement;
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.35) {
+          playWorkVideo(video);
         } else {
-          video.pause();
-          wrap.classList.remove('is-playing');
+          pauseWorkVideo(video);
         }
       }
     },
-    { threshold: [0.55, 0.7] },
+    { threshold: [0.2, 0.35, 0.6] },
   );
 
-  document.querySelectorAll<HTMLElement>('[data-testimonial-video]').forEach((wrap) => {
-    videoIo.observe(wrap);
-  });
-
-  // Play short work videos on hover / in view when present
   document.querySelectorAll<HTMLVideoElement>('[data-work-video]').forEach((video) => {
+    // Decode first frame so the old poster image never flashes
+    const paintFrame = () => {
+      if (video.readyState >= 2 && video.currentTime < 0.05) {
+        try {
+          video.currentTime = 0.001;
+        } catch {
+          /* ignore seek errors before ready */
+        }
+      }
+    };
+    video.addEventListener('loadeddata', paintFrame);
+    if (video.readyState >= 2) paintFrame();
+
+    workVideoIo.observe(video);
     const card = video.closest('.work-card');
-    const play = () => {
-      void video.play().catch(() => {});
-    };
-    const pause = () => {
-      video.pause();
-      video.currentTime = 0;
-    };
-    card?.addEventListener('mouseenter', play);
-    card?.addEventListener('mouseleave', pause);
-    card?.addEventListener('focusin', play);
-    card?.addEventListener('focusout', pause);
+    card?.addEventListener('mouseenter', () => playWorkVideo(video));
+    card?.addEventListener('focusin', () => playWorkVideo(video));
   });
 
   // Wheel → horizontal scroll for carousels on desktop

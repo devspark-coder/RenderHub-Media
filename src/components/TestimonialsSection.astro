@@ -1,114 +1,190 @@
 ---
 import { getTestimonials } from '../lib/content';
 const items = await getTestimonials();
+
+function initials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? '')
+    .join('');
+}
 ---
 
 {
   items.length > 0 && (
     <section class="section testimonials" id="comments" aria-labelledby="comments-title">
+      <div class="testimonials__glow" aria-hidden="true" />
+
       <div class="wrap testimonials__head">
-        <p class="kicker reveal">Client comments</p>
-        <h2 class="section-title reveal d1" id="comments-title">What clients say about the work</h2>
+        <div>
+          <p class="kicker reveal">Client comments</p>
+          <h2 class="section-title reveal d1" id="comments-title">What clients say about the work</h2>
+        </div>
+        <p class="section-lead reveal d2">
+          Real feedback from studios and creators we edit for — the kind of partnership that shows up in the final cut.
+        </p>
       </div>
 
-      <div class="t-loop" data-testimonial-loop aria-label="Client comments looping carousel">
-        <div class="t-loop__track">
-          <div class="t-loop__group">
-            {items.map((item) => (
-              <figure class="testimonial">
-                {item.videoUrl ? (
-                  <div class="testimonial__media" data-testimonial-video>
-                    <video
-                      muted
-                      loop
-                      playsinline
-                      preload="none"
-                      poster={item.poster || undefined}
-                      data-src={item.videoUrl}
-                    >
-                      <source data-src={item.videoUrl} type="video/mp4" />
-                    </video>
-                    <span class="testimonial__mute-badge" aria-hidden="true">Muted</span>
-                  </div>
-                ) : item.poster ? (
-                  <div class="testimonial__media">
-                    <img src={item.poster} alt="" width="640" height="360" loading="lazy" decoding="async" />
-                  </div>
-                ) : null}
-                <blockquote>
-                  <p>“{item.quote}”</p>
-                </blockquote>
-                <figcaption>
-                  <strong>{item.name}</strong>
-                  <span>{item.role}</span>
-                </figcaption>
-              </figure>
-            ))}
+      <div class="t-stack" data-testimonial-loop>
+        <div class="t-loop" aria-label="Client comments">
+          <div class="t-loop__track t-loop__track--a">
+            <div class="t-loop__group">
+              {items.map((item) => (
+                <figure class="quote">
+                  <span class="quote__mark" aria-hidden="true">“</span>
+                  <blockquote>
+                    <p>{item.quote}</p>
+                  </blockquote>
+                  <figcaption>
+                    <span class="quote__avatar" aria-hidden="true">{initials(item.name)}</span>
+                    <span class="quote__who">
+                      <strong>{item.name}</strong>
+                      <span>{item.role}</span>
+                    </span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+            <div class="t-loop__group" aria-hidden="true">
+              {items.map((item) => (
+                <figure class="quote">
+                  <span class="quote__mark" aria-hidden="true">“</span>
+                  <blockquote>
+                    <p>{item.quote}</p>
+                  </blockquote>
+                  <figcaption>
+                    <span class="quote__avatar" aria-hidden="true">{initials(item.name)}</span>
+                    <span class="quote__who">
+                      <strong>{item.name}</strong>
+                      <span>{item.role}</span>
+                    </span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
           </div>
-          <div class="t-loop__group" aria-hidden="true">
-            {items.map((item) => (
-              <figure class="testimonial">
-                {item.poster ? (
-                  <div class="testimonial__media">
-                    <img src={item.poster} alt="" width="640" height="360" loading="lazy" decoding="async" />
-                  </div>
-                ) : item.videoUrl ? (
-                  <div class="testimonial__media testimonial__media--static">
-                    <span class="testimonial__mute-badge" aria-hidden="true">Review</span>
-                  </div>
-                ) : null}
-                <blockquote>
-                  <p>“{item.quote}”</p>
-                </blockquote>
-                <figcaption>
-                  <strong>{item.name}</strong>
-                  <span>{item.role}</span>
-                </figcaption>
-              </figure>
-            ))}
+        </div>
+
+        <div class="t-loop" aria-hidden="true">
+          <div class="t-loop__track t-loop__track--b">
+            <div class="t-loop__group">
+              {[...items].reverse().map((item) => (
+                <figure class="quote quote--compact">
+                  <blockquote>
+                    <p>{item.quote}</p>
+                  </blockquote>
+                  <figcaption>
+                    <strong>{item.name}</strong>
+                    <span>{item.role}</span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+            <div class="t-loop__group">
+              {[...items].reverse().map((item) => (
+                <figure class="quote quote--compact">
+                  <blockquote>
+                    <p>{item.quote}</p>
+                  </blockquote>
+                  <figcaption>
+                    <strong>{item.name}</strong>
+                    <span>{item.role}</span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-      <p class="t-loop__note wrap">
-        Hover to pause the strip · Clips autoplay muted when on screen (8s loops)
-      </p>
+
+      <p class="t-loop__note wrap">Hover either strip to pause</p>
     </section>
   )
 }
 
 <style>
   .testimonials {
-    background: var(--surface);
-    border-block: 1px solid var(--line);
-    padding-block: clamp(2.75rem, 7vw, 5rem);
+    position: relative;
     overflow: hidden;
+    background:
+      radial-gradient(ellipse 70% 55% at 8% 0%, rgba(20, 184, 166, 0.14), transparent 55%),
+      radial-gradient(ellipse 55% 45% at 92% 100%, rgba(13, 148, 136, 0.1), transparent 50%),
+      linear-gradient(180deg, #f3f5f8 0%, #eef1f5 48%, #f6f7f9 100%);
+    padding-block: clamp(2.75rem, 7vw, 5.25rem);
+  }
+
+  .testimonials__glow {
+    position: absolute;
+    inset: auto -10% -30% 40%;
+    height: 18rem;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.7), transparent 70%);
+    pointer-events: none;
   }
 
   .testimonials__head {
-    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 0.85rem;
+    margin-bottom: 1.75rem;
+  }
+
+  @media (min-width: 900px) {
+    .testimonials__head {
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: end;
+      gap: 2rem;
+      margin-bottom: 2.25rem;
+    }
+
+    .testimonials__head .section-lead {
+      margin-bottom: 0;
+      justify-self: end;
+      text-align: right;
+      max-width: 28ch;
+    }
+  }
+
+  .t-stack {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 1rem;
   }
 
   .t-loop {
-    position: relative;
     overflow: hidden;
-    mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
   }
 
   .t-loop__track {
     display: flex;
     width: max-content;
-    animation: t-marquee 80s linear infinite;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
     animation-play-state: paused;
     will-change: transform;
   }
 
-  .t-loop.is-active .t-loop__track {
+  .t-loop__track--a {
+    animation-name: t-marquee-ltr;
+    animation-duration: 75s;
+  }
+
+  .t-loop__track--b {
+    animation-name: t-marquee-ltr;
+    animation-duration: 95s;
+  }
+
+  .t-stack.is-active .t-loop__track {
     animation-play-state: running;
   }
 
-  .t-loop.is-active:hover .t-loop__track,
-  .t-loop.is-active:focus-within .t-loop__track {
+  .t-stack.is-active .t-loop:hover .t-loop__track,
+  .t-stack.is-active .t-loop:focus-within .t-loop__track {
     animation-play-state: paused;
   }
 
@@ -118,102 +194,152 @@ const items = await getTestimonials();
     padding-inline: 0.5rem;
   }
 
-  .testimonial {
+  .quote {
+    --q: clamp(1.05rem, 2.1vw, 1.2rem);
     margin: 0;
     flex: 0 0 auto;
-    width: min(88vw, 24rem);
-    padding: 1.25rem;
-    background: var(--bg);
-    border: 1px solid var(--line);
-    border-top: 2px solid var(--signal);
-    border-radius: 1rem;
-    box-shadow: var(--shadow-sm);
+    width: min(86vw, 26rem);
+    padding: 1.45rem 1.5rem 1.35rem;
     display: grid;
-    gap: 0.95rem;
-  }
-
-  .testimonial__media {
+    gap: 1.15rem;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 1.35rem;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.9) inset,
+      0 18px 40px rgba(10, 10, 11, 0.06);
     position: relative;
-    aspect-ratio: 16 / 9;
-    overflow: hidden;
-    border-radius: 0.75rem;
-    background: var(--ink);
+    isolation: isolate;
   }
 
-  .testimonial__media--static {
-    background: linear-gradient(135deg, #1c1c1f, #0a0a0b);
-  }
-
-  .testimonial__media img,
-  .testimonial__media video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .testimonial__media video {
-    opacity: 0;
-    transition: opacity 0.25s var(--ease);
-  }
-
-  .testimonial__media.is-playing video {
-    opacity: 1;
-  }
-
-  .testimonial__mute-badge {
+  .quote::before {
+    content: '';
     position: absolute;
-    left: 0.65rem;
-    bottom: 0.65rem;
-    z-index: 2;
-    padding: 0.25rem 0.45rem;
-    border-radius: 0.35rem;
-    background: rgba(10, 10, 11, 0.75);
-    color: #fff;
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    inset: 0 auto 0 0;
+    width: 3px;
+    border-radius: 1.35rem 0 0 1.35rem;
+    background: linear-gradient(180deg, var(--signal-bright), rgba(13, 148, 136, 0.25));
   }
 
-  .testimonial blockquote {
-    margin: 0;
-  }
-
-  .testimonial p {
+  .quote__mark {
+    position: absolute;
+    top: 0.35rem;
+    right: 1rem;
     font-family: var(--font-display);
-    font-size: clamp(1rem, 2.2vw, 1.12rem);
-    line-height: 1.4;
-    letter-spacing: -0.025em;
+    font-size: 4.5rem;
+    line-height: 1;
+    letter-spacing: -0.08em;
+    color: rgba(13, 148, 136, 0.16);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .quote blockquote {
+    margin: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .quote p {
+    font-family: var(--font-display);
+    font-size: var(--q);
+    line-height: 1.38;
+    letter-spacing: -0.03em;
     color: var(--ink-soft);
   }
 
-  .testimonial figcaption {
+  .quote figcaption {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-top: 0.15rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .quote__avatar {
+    flex: 0 0 auto;
+    width: 2.35rem;
+    height: 2.35rem;
     display: grid;
-    gap: 0.15rem;
+    place-items: center;
+    border-radius: 0.7rem;
+    background: var(--ink);
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
   }
 
-  .testimonial strong {
+  .quote__who {
+    display: grid;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+
+  .quote strong {
     font-size: 0.95rem;
+    letter-spacing: -0.02em;
   }
 
-  .testimonial span {
+  .quote figcaption span:not(.quote__avatar):not(.quote__who),
+  .quote__who > span {
     color: var(--muted);
-    font-size: 0.84rem;
+    font-size: 0.82rem;
+  }
+
+  .quote--compact {
+    width: min(78vw, 20.5rem);
+    padding: 1.1rem 1.2rem 1.05rem;
+    gap: 0.85rem;
+    background: rgba(10, 10, 11, 0.92);
+    border-color: transparent;
+    box-shadow: 0 16px 36px rgba(10, 10, 11, 0.18);
+  }
+
+  .quote--compact::before {
+    background: linear-gradient(180deg, var(--signal-bright), rgba(20, 184, 166, 0.2));
+  }
+
+  .quote--compact p {
+    font-size: clamp(0.95rem, 1.9vw, 1.05rem);
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .quote--compact figcaption {
+    border-top-color: rgba(255, 255, 255, 0.12);
+    display: grid;
+    gap: 0.12rem;
+  }
+
+  .quote--compact strong {
+    color: #fff;
+    font-size: 0.88rem;
+  }
+
+  .quote--compact figcaption > span {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.78rem;
   }
 
   .t-loop__note {
-    margin-top: 0.85rem;
+    position: relative;
+    z-index: 1;
+    margin-top: 1rem;
     color: var(--muted);
     font-size: 0.78rem;
     font-weight: 600;
   }
 
-  @keyframes t-marquee {
+  /* Left → right continuous loop */
+  @keyframes t-marquee-ltr {
     from {
-      transform: translateX(0);
+      transform: translateX(-50%);
     }
     to {
-      transform: translateX(-50%);
+      transform: translateX(0);
     }
   }
 
@@ -226,7 +352,8 @@ const items = await getTestimonials();
       justify-content: center;
     }
 
-    .t-loop__group:last-child {
+    .t-loop__group:last-child,
+    .t-loop:last-of-type {
       display: none;
     }
 

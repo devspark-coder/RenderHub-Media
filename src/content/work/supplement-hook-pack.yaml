@@ -3,6 +3,6 @@ format: UGC
 platform: Meta
 vertical: Health
 poster: /posters/work-01.jpg
-videoSrc: ""
+videoSrc: /work/1.mp4
 driveUrl: https://drive.google.com/REPLACE_ME_drive_link_01
 order: 1

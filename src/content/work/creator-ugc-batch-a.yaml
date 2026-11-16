@@ -3,6 +3,6 @@ format: UGC
 platform: Meta
 vertical: SaaS
 poster: /posters/work-05.jpg
-videoSrc: ""
+videoSrc: /work/5.mp4
 driveUrl: https://drive.google.com/REPLACE_ME_drive_link_05
 order: 5

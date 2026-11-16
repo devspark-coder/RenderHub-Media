@@ -44,8 +44,8 @@ export default config({
           description: 'Cover image for now, e.g. /posters/work-01.jpg',
         }),
         videoSrc: fields.text({
-          label: 'Short video path (optional)',
-          description: 'When ready, put an mp4 in /public/videos/ and paste e.g. /videos/work-01.mp4 — replaces the poster on hover/autoplay.',
+          label: 'Preview clip URL',
+          description: 'Local preview: /work/1.mp4. Production: paste the Supabase public mp4 URL. Leave blank to show poster only.',
         }),
         driveUrl: fields.url({
           label: 'Drive / reel URL',
@@ -83,14 +83,6 @@ export default config({
         name: fields.slug({ name: { label: 'Name' } }),
         role: fields.text({ label: 'Role / company' }),
         quote: fields.text({ label: 'Comment', multiline: true }),
-        videoUrl: fields.text({
-          label: 'Video URL (CDN)',
-          description: 'Paste Bunny/Cloudflare/Cloudinary mp4 URL. Leave blank until hosted. Do NOT put big videos in the repo.',
-        }),
-        poster: fields.text({
-          label: 'Poster image',
-          description: 'Small jpg/webp path or CDN URL, e.g. /testimonials/daniel.jpg',
-        }),
         order: fields.integer({ label: 'Order', defaultValue: 1 }),
       },
     }),

@@ -32,8 +32,7 @@ const work = await getWork();
                     muted
                     loop
                     playsinline
-                    preload="metadata"
-                    poster={item.poster}
+                    preload="auto"
                     data-work-video
                   >
                     <source src={item.videoSrc} type="video/mp4" />
@@ -77,8 +76,8 @@ const work = await getWork();
                     muted
                     loop
                     playsinline
-                    preload="metadata"
-                    poster={item.poster}
+                    preload="auto"
+                    data-work-video
                   >
                     <source src={item.videoSrc} type="video/mp4" />
                   </video>
@@ -99,7 +98,7 @@ const work = await getWork();
       </div>
     </div>
   </div>
-  <p class="work-loop__note wrap">Hover to pause · Click a card to open the Drive reel</p>
+  <p class="work-loop__note wrap">Hover to pause · Clips autoplay muted when on screen · Click opens Drive reel</p>
 </section>
 
 <style>
@@ -140,7 +139,7 @@ const work = await getWork();
   .work-loop__track {
     display: flex;
     width: max-content;
-    animation: work-marquee 55s linear infinite;
+    animation: work-marquee 70s linear infinite;
     animation-play-state: paused;
     will-change: transform;
   }
@@ -213,6 +212,12 @@ const work = await getWork();
     background: rgba(10, 10, 11, 0.72);
     color: #fff;
     font-size: 0.7rem;
+    transition: opacity 0.25s var(--ease);
+  }
+
+  .work-card__video.is-playing ~ .work-card__play {
+    opacity: 0;
+    pointer-events: none;
   }
 
   .work-card:hover .work-card__media img,
@@ -241,12 +246,13 @@ const work = await getWork();
     font-weight: 600;
   }
 
+  /* Left → right continuous loop */
   @keyframes work-marquee {
     from {
-      transform: translateX(0);
+      transform: translateX(-50%);
     }
     to {
-      transform: translateX(-50%);
+      transform: translateX(0);
     }
   }
 
