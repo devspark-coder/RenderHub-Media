@@ -1,8 +1,12 @@
 ---
-import { getSite, getWork } from '../lib/content';
+import { getSite } from '../lib/content';
 const site = await getSite();
-const work = await getWork();
-const previews = work.slice(0, 3);
+
+const heroStills = [
+  { src: '/1_pic.png', alt: 'Editing preview still' },
+  { src: '/IMG_0504.PNG', alt: 'Editing preview still' },
+  { src: '/IMG_0506.PNG', alt: 'Editing preview still' },
+];
 ---
 
 <section class="hero" id="top" aria-labelledby="hero-brand" data-hero>
@@ -33,14 +37,23 @@ const previews = work.slice(0, 3);
       </div>
     </div>
 
-    <div class="hero-stage3d" data-tilt-stage aria-hidden="true">
+    <div class="hero-stage3d" data-tilt-stage>
       <div class="hero-stage3d__inner" data-tilt-inner>
         {
-          previews.map((item, i) => (
-            <a class={`hero-frame hero-frame--${i + 1}`} href="#work" tabindex="-1" data-tilt-layer={String(i + 1)}>
+          heroStills.map((still, i) => (
+            <a
+              class={`hero-frame hero-frame--${i + 1}`}
+              href="#work"
+              data-tilt-layer={String(i + 1)}
+              aria-label="Watch work videos"
+            >
               <span class="hero-frame__glow"></span>
-              <img src={item.poster} alt="" width="480" height="640" loading="eager" />
-              <span class="hero-frame__tag">Showreel</span>
+              <img src={still.src} alt={still.alt} width="480" height="640" loading="eager" />
+              <span class="hero-frame__play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                  <path d="M8 5.5v13l11-6.5L8 5.5z" />
+                </svg>
+              </span>
             </a>
           ))
         }
@@ -51,10 +64,14 @@ const previews = work.slice(0, 3);
   <div class="hero-strip" aria-label="Featured work preview">
     <div class="hero-strip__track">
       {
-        previews.map((item) => (
-          <a class="hero-strip__card" href="#work">
-            <img src={item.poster} alt="" width="320" height="400" loading="eager" />
-            <span>Showreel</span>
+        heroStills.map((still) => (
+          <a class="hero-strip__card" href="#work" aria-label="Watch work videos">
+            <img src={still.src} alt={still.alt} width="320" height="400" loading="eager" />
+            <span class="hero-strip__play" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M8 5.5v13l11-6.5L8 5.5z" />
+              </svg>
+            </span>
           </a>
         ))
       }
@@ -316,17 +333,28 @@ const previews = work.slice(0, 3);
     object-fit: cover;
   }
 
-  .hero-frame__tag {
+  .hero-frame__play {
     position: absolute;
-    left: 0.75rem;
-    bottom: 0.75rem;
+    inset: 50% auto auto 50%;
+    translate: -50% -50%;
     z-index: 2;
-    padding: 0.35rem 0.55rem;
-    background: rgba(10, 10, 11, 0.78);
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    width: 3.1rem;
+    height: 3.1rem;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: rgba(10, 10, 11, 0.72);
+    color: #fff;
+    box-shadow: 0 10px 28px rgba(10, 10, 11, 0.28);
+    transition:
+      transform 0.35s var(--ease),
+      background 0.35s var(--ease);
+  }
+
+  .hero-frame:hover .hero-frame__play,
+  .hero-frame:focus-visible .hero-frame__play {
+    transform: scale(1.08);
+    background: rgba(13, 148, 136, 0.92);
   }
 
   /* Fan layout — all three cards clearly visible */
@@ -405,18 +433,18 @@ const previews = work.slice(0, 3);
     object-fit: cover;
   }
 
-  .hero-strip__card span {
+  .hero-strip__play {
     position: absolute;
-    left: 0.65rem;
-    bottom: 0.65rem;
-    padding: 0.3rem 0.5rem;
-    background: rgba(10, 10, 11, 0.78);
+    inset: 50% auto auto 50%;
+    translate: -50% -50%;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: rgba(10, 10, 11, 0.72);
     color: #fff;
-    font-size: 0.58rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    border-radius: 0.35rem;
+    box-shadow: 0 8px 22px rgba(10, 10, 11, 0.28);
   }
 
   @keyframes rise {
